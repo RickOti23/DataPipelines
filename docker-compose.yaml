@@ -1,0 +1,31 @@
+version: "3.9"
+
+services:
+  db:
+    container_name: postgres
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: ny_taxi
+    ports:
+      - "5432:5432"   # map host 5432 to container 5432
+    volumes:
+      - vol-pgdata:/var/lib/postgresql/data
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4:latest
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ricky@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: pgadmin
+    ports:
+      - "8080:80"  # access pgAdmin at localhost:8080
+    volumes:
+      - vol-pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - db  # ensures db starts before pgAdmin
+
+volumes:
+  vol-pgdata:
+  vol-pgadmin_data:
